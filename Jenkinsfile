@@ -35,7 +35,28 @@ pipeline {
                 }
             }
         }
-*/        stage('DeployToProduction') {
+*/      stage('DeployToStaging') {
+            when {
+                branch !'master'
+            }
+            steps {
+//                withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+                    script {
+//                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker pull willbla/train-schedule:${env.BUILD_NUMBER}\""
+                        try {
+//                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker stop train-schedule\""
+                              sh "docker stop train-schedule_stage"
+//                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker rm train-schedule\""
+                              sh "docker rm train-schedule_stage"
+                        } catch (err) {
+                            echo: 'caught error: $err'
+                        }
+//                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker run --restart always --name train-schedule -p 8080:8080 -d willbla/train-schedule:${env.BUILD_NUMBER}\""
+                          sh "docker run --restart always --name train-schedule -p 3887:8080 -d train-schedule_stage:${env.BUILD_NUMBER}"
+                    }
+//                }
+            }
+        stage('DeployToProduction') {
             when {
                 branch 'master'
             }
