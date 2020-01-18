@@ -56,7 +56,7 @@ pipeline {
 //                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker run --restart always --name train-schedule -p 8080:8080 -d willbla/train-schedule:${env.BUILD_NUMBER}\""
                           sh "docker run --restart always --name train-schedule -p 3887:8080 -d train-schedule_stage:${env.BUILD_NUMBER}"
                     }
-//                }
+                }
             }
             stage('DeployToProduction') {
              when {
