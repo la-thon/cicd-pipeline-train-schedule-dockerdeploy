@@ -36,11 +36,11 @@ pipeline {
             }
         }
 */      stage('DeployToStaging') {
-            when {
+/*            when {
                 not {
                     branch 'master'
                 }
-            }
+*/            }
             steps {
 //                withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     script {
