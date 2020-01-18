@@ -38,7 +38,7 @@ pipeline {
 */      stage('DeployToStaging') {
             when {
                 not {
-                    !branch 'master'
+                    branch 'master'
                 }
             }
             steps {
